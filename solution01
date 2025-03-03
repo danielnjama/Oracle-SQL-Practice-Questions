@@ -35,3 +35,125 @@ SELECT * FROM Employees WHERE MONTHS_BETWEEN(SYSDATE, HireDate) / 12 > 2;
 SELECT Salary, EmployeeID, FirstName, LastName, Department, HireDate FROM Employees
 WHERE Salary IN (SELECT Salary FROM Employees GROUP BY Salary HAVING COUNT(*) > 1)
 ORDER BY Salary;
+
+
+
+
+
+-------------------------
+Section 2
+--------------------------
+-- 1. Retrieve all employees' first names, last names, and salaries.
+SELECT FIRST_NAME, LAST_NAME, SALARY FROM Employees;
+
+-- 2. Find all employees who earn more than 5000.
+SELECT FIRST_NAME, LAST_NAME, SALARY FROM Employees WHERE SALARY > 5000;
+
+-- 3. List all departments and their managers' first and last names.
+SELECT D.DEPARTMENT_NAME, E.FIRST_NAME, E.LAST_NAME
+FROM Departments D
+JOIN Employees E ON D.MANAGER_ID = E.EMPLOYEE_ID;
+
+-- 4. Retrieve all employees along with their department names.
+SELECT E.FIRST_NAME, E.LAST_NAME, D.DEPARTMENT_NAME
+FROM Employees E
+JOIN Departments D ON E.DEPARTMENT_ID = D.DEPARTMENT_ID;
+
+-- 5. Find all projects along with the department name and manager's first name.
+SELECT P.PROJECT_NAME, D.DEPARTMENT_NAME, E.FIRST_NAME
+FROM Projects P
+JOIN Departments D ON P.DEPARTMENT_ID = D.DEPARTMENT_ID
+JOIN Employees E ON D.MANAGER_ID = E.EMPLOYEE_ID;
+
+-- 6. Find the total salary expenditure for each department.
+SELECT D.DEPARTMENT_NAME, SUM(E.SALARY) AS TOTAL_SALARY
+FROM Employees E
+JOIN Departments D ON E.DEPARTMENT_ID = D.DEPARTMENT_ID
+GROUP BY D.DEPARTMENT_NAME;
+
+-- 7. Find the average salary of employees in each department.
+SELECT D.DEPARTMENT_NAME, AVG(E.SALARY) AS AVG_SALARY
+FROM Employees E
+JOIN Departments D ON E.DEPARTMENT_ID = D.DEPARTMENT_ID
+GROUP BY D.DEPARTMENT_NAME;
+
+-- 8. Find employees who earn more than the average salary of their department.
+SELECT E.FIRST_NAME, E.LAST_NAME, E.SALARY, D.DEPARTMENT_NAME
+FROM Employees E
+JOIN Departments D ON E.DEPARTMENT_ID = D.DEPARTMENT_ID
+WHERE E.SALARY > (SELECT AVG(SALARY) FROM Employees WHERE DEPARTMENT_ID = E.DEPARTMENT_ID);
+
+-- 9. Find departments that have no employees.
+SELECT D.DEPARTMENT_NAME
+FROM Departments D
+LEFT JOIN Employees E ON D.DEPARTMENT_ID = E.DEPARTMENT_ID
+WHERE E.EMPLOYEE_ID IS NULL;
+
+-- 10. Find employees hired in the year 2018.
+SELECT FIRST_NAME, LAST_NAME, HIRE_DATE
+FROM Employees
+WHERE EXTRACT(YEAR FROM HIRE_DATE) = 2018;
+
+-- 11. Find projects that started in 2022.
+SELECT PROJECT_NAME, START_DATE
+FROM Projects
+WHERE EXTRACT(YEAR FROM START_DATE) = 2022;
+
+-- 12. Find the second highest salary in the company.
+SELECT MAX(SALARY) AS SECOND_HIGHEST_SALARY
+FROM Employees
+WHERE SALARY < (SELECT MAX(SALARY) FROM Employees);
+
+-- 13. Find employees who are also managers of a department.
+SELECT E.FIRST_NAME, E.LAST_NAME, D.DEPARTMENT_NAME
+FROM Employees E
+JOIN Departments D ON E.EMPLOYEE_ID = D.MANAGER_ID;
+
+-- 14. Find the longest-running project (by duration in days).
+SELECT PROJECT_NAME, (END_DATE - START_DATE) AS DURATION_DAYS
+FROM Projects
+ORDER BY DURATION_DAYS DESC
+FETCH FIRST 1 ROW ONLY;
+
+-- 15. Rank employees by salary within their department.
+SELECT FIRST_NAME, LAST_NAME, SALARY, DEPARTMENT_NAME,
+       RANK() OVER (PARTITION BY E.DEPARTMENT_ID ORDER BY SALARY DESC) AS SALARY_RANK
+FROM Employees E
+JOIN Departments D ON E.DEPARTMENT_ID = D.DEPARTMENT_ID;
+
+-- 16. Find the cumulative salary for each department.
+SELECT D.DEPARTMENT_NAME, E.FIRST_NAME, E.LAST_NAME,
+       SUM(E.SALARY) OVER (PARTITION BY E.DEPARTMENT_ID ORDER BY E.EMPLOYEE_ID) AS CUMULATIVE_SALARY
+FROM Employees E
+JOIN Departments D ON E.DEPARTMENT_ID = D.DEPARTMENT_ID;
+
+-- 17. Find employees who are not managers of any department.
+SELECT FIRST_NAME, LAST_NAME
+FROM Employees
+WHERE EMPLOYEE_ID NOT IN (SELECT MANAGER_ID FROM Departments);
+
+-- 18. Find departments that have both employees and projects.
+SELECT DISTINCT D.DEPARTMENT_NAME
+FROM Departments D
+JOIN Employees E ON D.DEPARTMENT_ID = E.DEPARTMENT_ID
+JOIN Projects P ON D.DEPARTMENT_ID = P.DEPARTMENT_ID;
+
+-- 19. Insert a new employee into the Employees table.
+INSERT INTO Employees (EMPLOYEE_ID, FIRST_NAME, LAST_NAME, DEPARTMENT_ID, SALARY, HIRE_DATE)
+VALUES (106, 'David', 'Wilson', 30, 4800, TO_DATE('2023-01-15', 'YYYY-MM-DD'));
+
+-- 20. Update the salary of employees in the IT department by 10%.
+UPDATE Employees
+SET SALARY = SALARY * 1.10
+WHERE DEPARTMENT_ID = (SELECT DEPARTMENT_ID FROM Departments WHERE DEPARTMENT_NAME = 'IT');
+
+-- 21. Find employees whose last name starts with 'J'.
+SELECT FIRST_NAME, LAST_NAME
+FROM Employees
+WHERE LAST_NAME LIKE 'J%';
+
+-- 22. Find the number of employees in each department.
+SELECT D.DEPARTMENT_NAME, COUNT(E.EMPLOYEE_ID) AS EMPLOYEE_COUNT
+FROM Departments D
+LEFT JOIN Employees E ON D.DEPARTMENT_ID = E.DEPARTMENT_ID
+GROUP BY D.DEPARTMENT_NAME;

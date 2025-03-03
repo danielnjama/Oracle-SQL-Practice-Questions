@@ -1,0 +1,37 @@
+The questions/solutions given here may slightly vary depending with the database in use. Set with a focus on Oracle database. It should work for related databases sich as MySQL, Postgresql etc.
+
+-- Question 1: Retrieve all columns from the Employees table.
+SELECT * FROM Employees;
+
+-- Question 2: Retrieve the FirstName, LastName, and Salary of all employees in the IT department.
+SELECT FirstName, LastName, Salary FROM Employees WHERE Department = 'IT';
+
+-- Question 3: Retrieve the total number of employees in each department.
+SELECT Department, COUNT(*) AS Employee_Count FROM Employees GROUP BY Department;
+
+-- Question 4: Retrieve the highest salary in the Employees table.
+SELECT MAX(Salary) AS Max_Salary FROM Employees;
+
+-- Question 5: Retrieve the names of employees who were hired after January 1, 2020.
+SELECT FirstName, LastName FROM Employees WHERE HireDate > TO_DATE('2020-01-01', 'YYYY-MM-DD');
+
+-- Question 6: Retrieve the average salary of employees in the HR department.
+SELECT AVG(Salary) AS Avg_Salary FROM Employees WHERE Department = 'HR';
+
+-- Question 7: Retrieve the employees who earn more than the average salary in their department.
+SELECT e.* FROM Employees e
+JOIN (SELECT Department, AVG(Salary) AS Avg_Salary FROM Employees GROUP BY Department) d
+ON e.Department = d.Department AND e.Salary > d.Avg_Salary;
+
+-- Question 8: Retrieve the employees who have the highest salary in their respective departments.
+SELECT e.* FROM Employees e
+JOIN (SELECT Department, MAX(Salary) AS Max_Salary FROM Employees GROUP BY Department) d
+ON e.Department = d.Department AND e.Salary = d.Max_Salary;
+
+-- Question 9: Retrieve the employees who have been with the company for more than 2 years.
+SELECT * FROM Employees WHERE MONTHS_BETWEEN(SYSDATE, HireDate) / 12 > 2;
+
+-- Question 10: Retrieve the employees who have the same salary.
+SELECT Salary, EmployeeID, FirstName, LastName, Department, HireDate FROM Employees
+WHERE Salary IN (SELECT Salary FROM Employees GROUP BY Salary HAVING COUNT(*) > 1)
+ORDER BY Salary;

@@ -103,10 +103,7 @@ EMPLOYEEID | FIRSTNAME | LASTNAME | DEPARTMENT | SALARY | HIREDATE
 
 Question 10: Retrieve the employees who have the same salary.
 Expected Output:
-SALARY | EMPLOYEEID | FIRSTNAME | LASTNAME | DEPARTMENT | HIREDATE
--------|------------|-----------|----------|------------|---------
-55000  | 2          | Jane      | Smith    | HR         | 22-MAR-19
-55000  | 5          | Charlie   | Davis    | HR         | 01-FEB-22
+***
 
 -----------------------------------------
 2nd pack

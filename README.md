@@ -10,9 +10,9 @@ First, let's create a sample table and insert some data into it.
 -- Create the Employees table
 CREATE TABLE Employees (
     EmployeeID NUMBER PRIMARY KEY,
-    FirstName VARCHAR2(50),
-    LastName VARCHAR2(50),
-    Department VARCHAR2(50),
+    FirstName VARCHAR2(15),
+    LastName VARCHAR2(15),
+    Department VARCHAR2(15),
     Salary NUMBER,
     HireDate DATE
 );

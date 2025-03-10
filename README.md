@@ -78,9 +78,8 @@ Question 7: Retrieve the employees who earn more than the average salary in thei
 Expected Output:
 EMPLOYEEID | FIRSTNAME | LASTNAME | DEPARTMENT | SALARY | HIREDATE
 -----------|-----------|----------|------------|--------|---------
-1          | John      | Doe      | IT         | 60000  | 15-JAN-20
 3          | Alice     | Johnson  | IT         | 65000  | 10-JUL-21
-4          | Bob       | Brown    | Finance    | 70000  | 30-MAY-18
+2          | Jane      | Smith    | HR         | 55000  | 22-MAY-19
 6          | Eva       | Green    | Finance    | 72000  | 15-NOV-20
 
 Question 8: Retrieve the employees who have the highest salary in their respective departments.

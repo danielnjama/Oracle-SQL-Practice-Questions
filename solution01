@@ -36,6 +36,10 @@ SELECT Salary, EmployeeID, FirstName, LastName, Department, HireDate FROM Employ
 WHERE Salary IN (SELECT Salary FROM Employees GROUP BY Salary HAVING COUNT(*) > 1)
 ORDER BY Salary;
 
+OR
+
+SELECT e.* from Employees e join (SELECT Salary,count(*) salary_count from Employees group by Salary) cc on e.Salary=cc.Salary and cc.salary_count>1;
+
 
 
 

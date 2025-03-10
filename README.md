@@ -96,7 +96,9 @@ EMPLOYEEID | FIRSTNAME | LASTNAME | DEPARTMENT | SALARY | HIREDATE
 -----------|-----------|----------|------------|--------|---------
 1          | John      | Doe      | IT         | 60000  | 15-JAN-20
 2          | Jane      | Smith    | HR         | 55000  | 22-MAR-19
+3          | Alice     | Johnson  | IT         | 65000  | 10-JUL-21
 4          | Bob       | Brown    | Finance    | 70000  | 30-MAY-18
+5          | Charlie   | Davis    | HR         | 50000  | 01-FEB-22
 6          | Eva       | Green    | Finance    | 72000  | 15-NOV-20
 
 Question 10: Retrieve the employees who have the same salary.
